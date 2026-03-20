@@ -66,9 +66,25 @@ class QuestionBank:
     def search(self, query: str, top_k: int = 10):
         vec = self._model.encode(query).tolist()
         results = self._index.query(vector=vec, top_k=top_k)
-        output = []
-        for r in results:
-            meta = r.get("meta", {}) if isinstance(r, dict) else (r.meta or {})
-            sim = r.get("similarity", 0) if isinstance(r, dict) else r.similarity
-            output.append({"text": meta.get("text", ""), "role": meta.get("role", ""), "category": meta.get("category", ""), "score": round(sim, 4)})
-        return output
+        return [
+            {
+                "text":     r.meta.get("text", ""),
+                "role":     r.meta.get("role", ""),
+                "category": r.meta.get("category", ""),
+                "score":    round(r.similarity, 4),
+            }
+            for r in results
+        ]
+        return [  
+            {
+                "text":     r.meta.get("text", ""),
+                "role":     r.meta.get("role", ""),
+                "category": r.meta.get("category", ""),
+                "score":    round(r.similarity, 4),
+            }   
+            for r in results
+        ]
+       
+
+
+

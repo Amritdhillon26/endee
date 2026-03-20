@@ -3,7 +3,7 @@ from typing import List, Dict, Optional
 from groq import Groq
 from question_bank import QuestionBank
 
-MODEL = "llama3-70b-8192"
+MODEL = "llama-3.3-70b-versatile"
 
 
 class RAGEngine:
