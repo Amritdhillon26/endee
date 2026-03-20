@@ -1,38 +1,37 @@
-# 🎯 PlaceCoach – AI Interview Coach & Resume Analyzer
+# 🎯 PlaceCoach – AI Placement Coach & Interview Preparation System
 
-> **Intelligent interview preparation powered by [Endee](https://github.com/endee-io/endee) Vector Database + Groq LLaMA3**
+> **Intelligent, voice-enabled interview preparation powered by [Endee](https://github.com/endee-io/endee) Vector Database + Groq LLaMA3**
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square)
 ![Endee](https://img.shields.io/badge/VectorDB-Endee-6c3fc4?style=flat-square)
-![Groq](https://img.shields.io/badge/LLM-Groq%20LLaMA3--70B-orange?style=flat-square)
+![Groq](https://img.shields.io/badge/LLM-Groq%20LLaMA3-orange?style=flat-square)
 ![Streamlit](https://img.shields.io/badge/UI-Streamlit-red?style=flat-square)
+![Voice](https://img.shields.io/badge/Voice-Web%20Speech%20API-green?style=flat-square)
 ![License](https://img.shields.io/badge/License-Apache%202.0-green?style=flat-square)
 
 ---
 
-
 ## 📸 Screenshots
 
 ### Home & Setup
-![PlaceCoach Home](screenshots/home.png)
+![Home](screenshots/home.png)
 
 ### CV Report Card
 ![CV Report Card](screenshots/cv_report.png)
 
 ### Interview Session
-![Interview Chat](screenshots/interview.png)
+![Interview](screenshots/interview.png)
 
 ### Final Report
-![Interview Report](screenshots/report.png)
+![Report](screenshots/report.png)
+
+---
 
 ## 📌 Problem Statement
 
-Students and job seekers often struggle with interview preparation — generic question lists don't account for their specific skills, experience level, or target role. PlaceCoach solves this by:
+Students and job seekers struggle with interview preparation because generic question lists do not match their specific skills or target role, there is no personalised feedback on answers, no insight into what is missing from their CV, and no way to practice for specific companies like Google or Amazon.
 
-1. **Parsing the candidate's resume** to extract skills, experience, and domains
-2. **Semantically retrieving** the most relevant interview questions from Endee vector DB
-3. **Evaluating answers** using Groq LLaMA3-70B with scores, feedback, and improvement tips
-4. **Generating a personalised report** with overall recommendations
+**PlaceCoach solves all of this** by combining resume analysis, semantic vector search, AI evaluation, voice typing, and a comprehensive CV Report Card into one intelligent platform.
 
 ---
 
@@ -40,77 +39,81 @@ Students and job seekers often struggle with interview preparation — generic q
 
 | Feature | Description |
 |---|---|
-| 📄 **Resume Analysis** | Extracts name, skills, domains, experience using LLM |
+| 📄 **Resume Analysis** | Extracts name, skills, domains, experience using Groq LLM |
+| 📊 **CV Report Card** | Scores your CV out of 100 with grade, ATS score, strengths, gaps and suggestions |
 | 🔍 **Semantic Question Retrieval** | Finds most relevant questions via Endee vector search |
-| 🤖 **AI Answer Evaluation** | Scores answers 1–10 with detailed feedback |
-| 📊 **Interview Report** | Full breakdown with per-question feedback + overall advice |
-| 🎯 **15+ Job Roles** | SWE, DS, PM, Marketing, Finance, HR, DevOps, and more |
-| 💬 **150+ Questions** | Curated question bank covering technical & behavioural areas |
+| 🏢 **Company-Specific Questions** | Target Google, Amazon, Microsoft, TCS, Goldman Sachs and more |
+| 🎤 **Voice Typing** | Speak your answers using built-in mic with real-time transcription |
+| 🔄 **AI Follow-up Questions** | After each answer, AI asks a deeper follow-up question |
+| 🤖 **AI Answer Evaluation** | Scores answers 1-10 with detailed feedback and improvement tips |
+| 📈 **Interview Report** | Full breakdown with per-question scores and overall career advice |
+| 💬 **Chat Bubble UI** | WhatsApp-style conversation interface |
+| 🎯 **15+ Job Roles** | SWE, DS, PM, Marketing, Finance, HR, DevOps and more |
+| 💬 **150+ Questions** | Curated question bank covering technical and behavioural areas |
 
 ---
 
 ## 🏗️ System Design
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                     USER (Streamlit UI)                      │
-└────────────────────────┬─────────────────────────────────────┘
-                         │  Resume PDF + Target Role
-                         ▼
-┌──────────────────────────────────────────────────────────────┐
-│                    RESUME PARSER                             │
-│   pdfplumber extracts text → Groq LLM structures it into    │
-│   {name, skills, domains, experience, education}            │
-└────────────────────────┬─────────────────────────────────────┘
-                         │  Structured resume data
-                         ▼
-┌──────────────────────────────────────────────────────────────┐
-│                RAG QUESTION RETRIEVAL                        │
-│  1. Build semantic query: role + skills + domains           │
-│  2. Embed query (MiniLM-L6-v2, 384-dim)                    │
-│  3. Search Endee vector DB → top-20 similar questions       │
-│  4. LLM selects best N questions for this candidate         │
-└────────────────────────┬─────────────────────────────────────┘
-                         │  Personalised question list
-                         ▼
-┌──────────────────────────────────────────────────────────────┐
-│              INTERACTIVE INTERVIEW SESSION                   │
-│   Candidate answers each question → submitted to evaluator  │
-└────────────────────────┬─────────────────────────────────────┘
-                         │  Q&A pairs
-                         ▼
-┌──────────────────────────────────────────────────────────────┐
-│                   ANSWER EVALUATOR                           │
-│   Groq LLaMA3-70B scores each answer (1-10) and provides:  │
-│   → Positive feedback → Improvement tips → Missing keywords │
-└────────────────────────┬─────────────────────────────────────┘
-                         │  Evaluation results
-                         ▼
-┌──────────────────────────────────────────────────────────────┐
-│                   INTERVIEW REPORT                           │
-│   Overall score, per-question breakdown, recommendations    │
-└──────────────────────────────────────────────────────────────┘
++------------------------------------------------------------------+
+|                      USER (Streamlit UI)                         |
+|              Chat Bubble Interface + Voice Typing                |
++------------------------------------------------------------------+
+                         |  Resume PDF + Target Role + Company
+                         v
++------------------------------------------------------------------+
+|                     RESUME PARSER                                |
+|   pdfplumber extracts text → Groq LLM structures into:          |
+|   {name, skills, domains, experience, education, summary}       |
++------------------------------------------------------------------+
+                         v
++------------------------------------------------------------------+
+|                   CV REPORT CARD ENGINE                          |
+|   Groq LLM analyses CV vs role → Score/100, ATS, gaps, tips    |
++------------------------------------------------------------------+
+                         v
++------------------------------------------------------------------+
+|              RAG QUESTION RETRIEVAL (via Endee)                  |
+|   Embed query → Search Endee → Top-20 → LLM selects best N     |
++------------------------------------------------------------------+
+                         v
++------------------------------------------------------------------+
+|           INTERACTIVE INTERVIEW SESSION                          |
+|   Voice/text input → AI evaluates → Follow-up question         |
++------------------------------------------------------------------+
+                         v
++------------------------------------------------------------------+
+|                   INTERVIEW REPORT                               |
+|   Score + grade + feedback + CV analysis + career advice        |
++------------------------------------------------------------------+
+
+ENDEE VECTOR DB (runs via Docker):
+  150+ curated questions → Embed (MiniLM) → Upsert into Endee
+  At query time: embed query → cosine similarity → top-K results
 ```
 
 ---
 
 ## 🗄️ How Endee is Used
 
-Endee is the **semantic search backbone** of PlaceCoach.
+Endee is the **core semantic search engine** of PlaceCoach.
 
-### Indexing the Question Bank
+### Creating the Index
 ```python
 from endee import Endee, Precision
 
 client = Endee()
 client.set_base_url("http://localhost:8080/api/v1")
-
 client.create_index(
     name="interview_questions",
     dimension=384,
     space_type="cosine",
     precision=Precision.INT8
 )
+```
 
+### Indexing 150+ Questions
+```python
 index = client.get_index(name="interview_questions")
 index.upsert([
     {
@@ -127,10 +130,44 @@ index.upsert([
 
 ### Semantic Retrieval
 ```python
-query = "Software Engineer interview. Skills: Python, APIs. Domains: Backend."
-query_vector = model.encode(query).tolist()
-results = index.query(vector=query_vector, top_k=20)
+query = "Software Engineer Google interview. Skills: Python, System Design."
+results = index.query(vector=model.encode(query).tolist(), top_k=20)
 ```
+
+---
+
+## 📊 CV Report Card
+
+After uploading your resume, you instantly get:
+- **Overall CV Score** out of 100 with A+/A/B+/B/C grade
+- **Role Fit Score, ATS Score, Skills Score, Experience Score, Education Score**
+- **Strengths** — what is working in your CV
+- **Gaps** — what is weak or missing for the target role
+- **Missing Skills** — specific skills to add
+- **Improvement Suggestions** — actionable steps to improve your CV
+- **ATS Optimization Tips** — how to beat resume scanners
+
+---
+
+## 🎤 Voice Typing
+
+Built-in voice input using the Web Speech API. Click the mic button, speak your answer, text appears in real-time in the answer box. Works best in Chrome browser.
+
+---
+
+## 🏢 Company-Specific Questions
+
+Select your target company to get tailored questions:
+- **Tech Giants**: Google, Amazon, Microsoft, Meta, Apple
+- **Indian IT**: Flipkart, Infosys, TCS, Wipro, Accenture
+- **Finance/Consulting**: Goldman Sachs, McKinsey, Deloitte
+- **Startups**: Generic startup culture questions
+
+---
+
+## 🔄 AI Follow-up Questions
+
+After each answer, the AI automatically generates a deeper follow-up question based on what you said — just like a real interviewer probing for more depth.
 
 ---
 
@@ -138,13 +175,14 @@ results = index.query(vector=query_vector, top_k=20)
 
 ### Prerequisites
 - Python 3.10+
-- Docker & Docker Compose
+- Docker and Docker Compose
 - [Free Groq API Key](https://console.groq.com)
+- Chrome browser (for voice typing)
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/PlaceCoach
-cd PlaceCoach
+git clone https://github.com/Amritdhillon26/endee
+cd endee/placecoach
 ```
 
 ### Step 2: Start Endee Vector Database
@@ -165,32 +203,32 @@ cp .env.example .env
 # Add your GROQ_API_KEY to .env
 ```
 
-### Step 5: Launch the App
+### Step 5: Launch PlaceCoach
 ```bash
 streamlit run app.py
 ```
-Visit [http://localhost:8501](http://localhost:8501)
+Open http://localhost:8501 in Chrome.
 
 ### Step 6: Use It
-1. Enter your **Groq API Key** in the sidebar
-2. Upload your **resume PDF**
-3. Select your **target job role**
-4. Choose number of questions
-5. Click **Start Interview Session**
-6. Answer each question and get instant AI feedback
-7. Review your full **Interview Report**
+1. Upload your **resume PDF**
+2. Select **target role** and **company**
+3. Click **Start Interview** — CV Report Card generates instantly
+4. Answer by **typing or speaking** using the mic button
+5. Get **AI follow-up questions** after each answer
+6. Review your full **Interview Report** with scores and career advice
 
 ---
 
 ## 📂 Project Structure
 ```
-PlaceCoach/
-├── app.py                  # Streamlit UI & session management
-├── rag_engine.py           # RAG retrieval + answer evaluation
-├── question_bank.py        # 150+ questions + Endee indexing
-├── resume_parser.py        # PDF parsing + LLM structuring
+placecoach/
+├── app.py              # Main Streamlit UI (chat + voice)
+├── cv_analyzer.py      # CV Report Card engine (score/100)
+├── rag_engine.py       # RAG retrieval + evaluation + follow-ups
+├── question_bank.py    # 150+ questions + Endee indexing
+├── resume_parser.py    # PDF parsing + LLM structuring
 ├── requirements.txt
-├── docker-compose.yml      # Endee vector DB
+├── docker-compose.yml  # Endee vector DB
 ├── .env.example
 └── README.md
 ```
@@ -202,30 +240,16 @@ PlaceCoach/
 | Component | Technology |
 |---|---|
 | Vector Database | **Endee** (HNSW, cosine similarity, INT8) |
-| Embedding Model | **sentence-transformers/all-MiniLM-L6-v2** (384-dim) |
-| LLM | **Groq LLaMA3-70B** (free, ultra-fast) |
+| Embedding Model | **all-MiniLM-L6-v2** (384-dim) |
+| LLM | **Groq LLaMA3-3-70b-versatile** (free, ultra-fast) |
 | UI | **Streamlit** |
+| Voice Input | **Web Speech API** (Chrome) |
 | PDF Parsing | **pdfplumber** |
 
 ---
 
 ## 📄 License
 
-Apache 2.0 License
-```
+Apache 2.0 License — see [LICENSE](../../LICENSE)
 
-- Press **Cmd+S** to save
-
----
-
-All 8 files are now done! 🎉 Your folder should look like this:
-```
-placecoach/
-├── app.py
-├── rag_engine.py
-├── question_bank.py
-├── resume_parser.py
-├── requirements.txt
-├── docker-compose.yml
-├── .env.example
-└── README.md
+Built on [Endee](https://github.com/endee-io/endee). Forked from endee-io/endee as required by project guidelines.
