@@ -10,6 +10,21 @@
 
 ---
 
+
+## 📸 Screenshots
+
+### Home & Setup
+![PlaceCoach Home](screenshots/home.png)
+
+### CV Report Card
+![CV Report Card](screenshots/cv_report.png)
+
+### Interview Session
+![Interview Chat](screenshots/interview.png)
+
+### Final Report
+![Interview Report](screenshots/report.png)
+
 ## 📌 Problem Statement
 
 Students and job seekers often struggle with interview preparation — generic question lists don't account for their specific skills, experience level, or target role. PlaceCoach solves this by:
