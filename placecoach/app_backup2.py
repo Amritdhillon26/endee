@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from resume_parser import ResumeParser
 from question_bank import QuestionBank
 from rag_engine import RAGEngine
-from cv_analyzer import CVAnalyzer
 
 load_dotenv()
 
@@ -325,7 +324,7 @@ function stopMic() {
 defaults = {
     "resume_data": None, "questions": [], "current_q": 0,
     "answers": [], "evaluations": [], "session_complete": False,
-    "bank_ready": False, "setup_done": False, "cv_report": None, "role": "Software Engineer",
+    "bank_ready": False, "setup_done": False, "role": "Software Engineer",
     "num_q": 5,
 }
 for k, v in defaults.items():
@@ -334,8 +333,7 @@ for k, v in defaults.items():
 
 if "parser"  not in st.session_state: st.session_state.parser  = ResumeParser()
 if "bank"    not in st.session_state: st.session_state.bank    = QuestionBank()
-if "engine"   not in st.session_state: st.session_state.engine   = RAGEngine()
-if "analyzer" not in st.session_state: st.session_state.analyzer = CVAnalyzer()
+if "engine"  not in st.session_state: st.session_state.engine  = RAGEngine()
 
 # ── Header ────────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -383,10 +381,6 @@ if not st.session_state.setup_done:
                 with st.spinner("📖 Analysing your resume..."):
                     st.session_state.resume_data = st.session_state.parser.parse(
                         resume_file, GROQ_API_KEY_INPUT)
-                st.session_state.analyzer.set_config(GROQ_API_KEY_INPUT)
-                with st.spinner("🧠 Generating CV Report Card..."):
-                    st.session_state.cv_report = st.session_state.analyzer.analyze(
-                        st.session_state.resume_data, role)
                 if not st.session_state.bank_ready:
                     with st.spinner("🗄️ Loading question bank into Endee..."):
                         st.session_state.bank.set_config(ENDEE_URL_INPUT)
@@ -441,56 +435,6 @@ if st.session_state.resume_data:
                 st.markdown(f"**{skill}** — {pct}%")
                 st.progress(pct / 100)
 
-
-# ── CV REPORT CARD ──────────────────────────────────────────────────────
-if st.session_state.get("cv_report") and st.session_state.get("setup_done"):
-    cr = st.session_state.cv_report
-    overall = cr.get("overall_score", 0)
-    grade   = cr.get("grade", "B")
-    if overall >= 80:   hero_color = "linear-gradient(135deg,#064e3b,#059669)"
-    elif overall >= 65: hero_color = "linear-gradient(135deg,#0a2342,#1d4ed8)"
-    elif overall >= 50: hero_color = "linear-gradient(135deg,#78350f,#d97706)"
-    else:               hero_color = "linear-gradient(135deg,#7f1d1d,#dc2626)"
-
-    with st.expander("📊 CV Report Card — Click to View", expanded=True):
-        st.markdown(f'''<div style="background:{hero_color};border-radius:20px;padding:2rem;color:white;margin-bottom:1rem;">
-            <div style="font-size:0.8rem;opacity:0.6;text-transform:uppercase;letter-spacing:2px">CV REPORT CARD</div>
-            <div style="font-size:4rem;font-weight:900;line-height:1">{overall}<span style="font-size:1.5rem;opacity:0.5">/100</span></div>
-            <div style="font-size:1.2rem;font-weight:700">{grade} Grade</div>
-            <div style="font-size:0.88rem;opacity:0.8;margin-top:0.5rem">{cr.get("summary_verdict","")}</div>
-        </div>''', unsafe_allow_html=True)
-
-        cols = st.columns(5)
-        for col, (lbl, val) in zip(cols, [
-            ("Role Fit", cr.get("role_fit_score",0)),
-            ("ATS", cr.get("ats_score",0)),
-            ("Skills", cr.get("skills_score",0)),
-            ("Experience", cr.get("experience_score",0)),
-            ("Education", cr.get("education_score",0)),
-        ]):
-            with col:
-                st.metric(lbl, f"{val}/100")
-
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown("**✅ Strengths**")
-            for s in cr.get("strengths", []): st.markdown(f"- {s}")
-        with col2:
-            st.markdown("**⚠️ Gaps**")
-            for w in cr.get("weaknesses", []): st.markdown(f"- {w}")
-
-        st.markdown("**❌ Missing Skills**")
-        st.markdown(" ".join([f"`{s}`" for s in cr.get("missing_skills", [])]))
-
-        st.markdown("**💡 CV Improvement Suggestions**")
-        for i, sug in enumerate(cr.get("suggestions", []), 1):
-            st.markdown(f"{i}. {sug}")
-
-        st.markdown("**🤖 ATS Tips**")
-        for tip in cr.get("ats_tips", []): st.markdown(f"- {tip}")
-
-        st.info(f"🎯 **Role Assessment:** {cr.get('role_verdict','')}")
-
 # ── ACTIVE INTERVIEW ──────────────────────────────────────────────────────────
 if not st.session_state.session_complete:
     total = len(st.session_state.questions)
@@ -531,7 +475,7 @@ if not st.session_state.session_complete:
 
     # WhatsApp-style input row: textarea + mic + send
     answer = st.text_area(
-        "Your Answer",
+        "",
         height=100,
         placeholder="Type your answer or tap 🎤 to speak...",
         key=f"answer_{curr}",
