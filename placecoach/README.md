@@ -11,6 +11,12 @@
 
 ---
 
+## 🎥 Demo Video
+
+[▶️ Click here to watch the full demo](screenshots/demo.mov)
+
+---
+
 ## 📸 Screenshots
 
 ### Home & Setup
