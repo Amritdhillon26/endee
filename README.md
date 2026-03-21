@@ -1,139 +1,261 @@
-<p align="center">
-  <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
-      <source media="(prefers-color-scheme: light)" srcset="docs/assets/logo-light.svg">
-      <img height="100" alt="Endee" src="docs/assets/logo-dark.svg">
-  </picture>
-</p>
+# 🎯 PlaceCoach – AI Placement Coach & Interview Preparation System
 
-<p align="center">
-    <b>High-performance open-source vector database for AI search, RAG, semantic search, and hybrid retrieval.</b>
-</p>
+> **Intelligent, voice-enabled interview preparation powered by [Endee](https://github.com/endee-io/endee) Vector Database + Groq LLaMA3**
 
-<p align="center">
-    <a href="./docs/getting-started.md"><img src="https://img.shields.io/badge/Quick_Start-Local_Setup-success?style=flat-square" alt="Quick Start"></a>
-    <a href="https://docs.endee.io/quick-start"><img src="https://img.shields.io/badge/Docs-Quick_Start-success?style=flat-square" alt="Docs"></a>
-    <a href="https://github.com/endee-io/endee/blob/master/LICENSE"><img src="https://img.shields.io/github/license/endee-io/endee?style=flat-square" alt="License"></a>
-    <a href="https://discord.gg/5HFGqDZQE3"><img src="https://img.shields.io/badge/Discord-Join_Chat-5865F2?logo=discord&style=flat-square" alt="Discord"></a>
-    <a href="https://endee.io/"><img src="https://img.shields.io/badge/Website-Endee-111111?style=flat-square" alt="Website"></a>
-    <!-- <a href="https://endee.io/benchmarks"><img src="https://img.shields.io/badge/Benchmarks-Coming_Soon-1F8B4C?style=flat-square" alt="Benchmarks"></a> -->
-    <!-- <a href="https://endee.io/cloud"><img src="https://img.shields.io/badge/Cloud-Coming_Soon-2496ED?style=flat-square" alt="Cloud"></a> -->
-</p>
+![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square)
+![Endee](https://img.shields.io/badge/VectorDB-Endee-6c3fc4?style=flat-square)
+![Groq](https://img.shields.io/badge/LLM-Groq%20LLaMA3-orange?style=flat-square)
+![Streamlit](https://img.shields.io/badge/UI-Streamlit-red?style=flat-square)
+![Voice](https://img.shields.io/badge/Voice-Web%20Speech%20API-green?style=flat-square)
+![License](https://img.shields.io/badge/License-Apache%202.0-green?style=flat-square)
 
-<p align="center">
-<strong><a href="./docs/getting-started.md">Quick Start</a> • <a href="#why-endee">Why Endee</a> • <a href="#use-cases">Use Cases</a> • <a href="#features">Features</a> • <a href="#api-and-clients">API and Clients</a> • <a href="#docs-and-links">Docs</a> • <a href="#community-and-contact">Contact</a></strong>
-</p>
+---
 
-# Endee: Open-Source Vector Database for AI Search
+## 🎥 Demo Video
 
-**Endee** is a high-performance open-source vector database built for AI search and retrieval workloads. It is designed for teams building **RAG pipelines**, **semantic search**, **hybrid search**, recommendation systems, and filtered vector retrieval APIs that need production-oriented performance and control.
+[▶️ Click here to watch the full demo](screenshots/demo.mov)
 
-Endee combines vector search with filtering, sparse retrieval support, backup workflows, and deployment flexibility across local builds and Docker-based environments. The project is implemented in C++ and optimized for modern CPU targets, including AVX2, AVX512, NEON, and SVE2.
+---
 
-If you want the fastest path to evaluate Endee locally, start with the [Getting Started guide](./docs/getting-started.md) or the hosted docs at [docs.endee.io](https://docs.endee.io/quick-start).
+## 📸 Screenshots
 
-## Why Endee
+### Home & Setup
+![Home](screenshots/home.png)
 
-- Built as a dedicated vector database for AI applications, search systems, and retrieval-heavy workloads.
-- Supports dense vector retrieval plus sparse search capabilities for hybrid search use cases.
-- Includes payload filtering for metadata-aware retrieval and application-specific query logic.
-- Ships with operational features already documented in this repo, including backup flows and runtime observability.
-- Offers flexible deployment paths: local scripts, manual builds, Docker images, and prebuilt registry images.
+### CV Report Card
+![CV Report Card](screenshots/cv_report.png)
 
-## Getting Started
+### Interview Session
+![Interview](screenshots/interview.png)
 
-The full installation, build, Docker, runtime, and authentication instructions are in [docs/getting-started.md](./docs/getting-started.md).
+### Final Report
+![Report](screenshots/report.png)
 
-Fastest local path:
+---
 
-```bash
-chmod +x ./install.sh ./run.sh
-./install.sh --release --avx2
-./run.sh
+## 📌 Problem Statement
+
+Students and job seekers struggle with interview preparation because generic question lists do not match their specific skills or target role, there is no personalised feedback on answers, no insight into what is missing from their CV, and no way to practice for specific companies like Google or Amazon.
+
+**PlaceCoach solves all of this** by combining resume analysis, semantic vector search, AI evaluation, voice typing, and a comprehensive CV Report Card into one intelligent platform.
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+|---|---|
+| 📄 **Resume Analysis** | Extracts name, skills, domains, experience using Groq LLM |
+| 📊 **CV Report Card** | Scores your CV out of 100 with grade, ATS score, strengths, gaps and suggestions |
+| 🔍 **Semantic Question Retrieval** | Finds most relevant questions via Endee vector search |
+| 🏢 **Company-Specific Questions** | Target Google, Amazon, Microsoft, TCS, Goldman Sachs and more |
+| 🎤 **Voice Typing** | Speak your answers using built-in mic with real-time transcription |
+| 🔄 **AI Follow-up Questions** | After each answer, AI asks a deeper follow-up question |
+| 🤖 **AI Answer Evaluation** | Scores answers 1-10 with detailed feedback and improvement tips |
+| 📈 **Interview Report** | Full breakdown with per-question scores and overall career advice |
+| 💬 **Chat Bubble UI** | WhatsApp-style conversation interface |
+| 🎯 **15+ Job Roles** | SWE, DS, PM, Marketing, Finance, HR, DevOps and more |
+| 💬 **150+ Questions** | Curated question bank covering technical and behavioural areas |
+
+---
+
+## 🏗️ System Design
+```
++------------------------------------------------------------------+
+|                      USER (Streamlit UI)                         |
+|              Chat Bubble Interface + Voice Typing                |
++------------------------------------------------------------------+
+                         |  Resume PDF + Target Role + Company
+                         v
++------------------------------------------------------------------+
+|                     RESUME PARSER                                |
+|   pdfplumber extracts text → Groq LLM structures into:          |
+|   {name, skills, domains, experience, education, summary}       |
++------------------------------------------------------------------+
+                         v
++------------------------------------------------------------------+
+|                   CV REPORT CARD ENGINE                          |
+|   Groq LLM analyses CV vs role → Score/100, ATS, gaps, tips    |
++------------------------------------------------------------------+
+                         v
++------------------------------------------------------------------+
+|              RAG QUESTION RETRIEVAL (via Endee)                  |
+|   Embed query → Search Endee → Top-20 → LLM selects best N     |
++------------------------------------------------------------------+
+                         v
++------------------------------------------------------------------+
+|           INTERACTIVE INTERVIEW SESSION                          |
+|   Voice/text input → AI evaluates → Follow-up question         |
++------------------------------------------------------------------+
+                         v
++------------------------------------------------------------------+
+|                   INTERVIEW REPORT                               |
+|   Score + grade + feedback + CV analysis + career advice        |
++------------------------------------------------------------------+
+
+ENDEE VECTOR DB (runs via Docker):
+  150+ curated questions → Embed (MiniLM) → Upsert into Endee
+  At query time: embed query → cosine similarity → top-K results
 ```
 
-The server listens on port `8080`. For detailed setup paths, supported operating systems, CPU optimization flags, Docker usage, and authentication examples, use:
+---
 
-- [Getting Started](./docs/getting-started.md)
-- [Hosted Quick Start Docs](https://docs.endee.io/quick-start)
+## 🗄️ How Endee is Used
 
-## Use Cases
+Endee is the **core semantic search engine** of PlaceCoach.
 
-### RAG and AI Retrieval
+### Creating the Index
+```python
+from endee import Endee, Precision
 
-Use Endee as the retrieval layer for question answering, chat assistants, copilots, and other RAG applications that need fast vector search with metadata-aware filtering.
+client = Endee()
+client.set_base_url("http://localhost:8080/api/v1")
+client.create_index(
+    name="interview_questions",
+    dimension=384,
+    space_type="cosine",
+    precision=Precision.INT8
+)
+```
 
-### Agentic AI and AI Agent Memory
+### Indexing 150+ Questions
+```python
+index = client.get_index(name="interview_questions")
+index.upsert([
+    {
+        "id": "se_001",
+        "vector": model.encode("Explain SOLID principles").tolist(),
+        "meta": {
+            "text": "Explain SOLID principles...",
+            "role": "Software Engineer",
+            "category": "OOP"
+        }
+    }
+])
+```
 
-Use Endee as the long-term memory and context retrieval layer for AI agents built with frameworks like LangChain, CrewAI, AutoGen, and LlamaIndex. Store and retrieve past observations, tool outputs, conversation history, and domain knowledge mid-execution with low-latency filtered vector search, so your autonomous agents get the right context without stalling their reasoning loop.
+### Semantic Retrieval
+```python
+query = "Software Engineer Google interview. Skills: Python, System Design."
+results = index.query(vector=model.encode(query).tolist(), top_k=20)
+```
 
-### Semantic Search
+---
 
-Build semantic search experiences for documents, products, support content, and knowledge bases using vector similarity search instead of exact keyword-only matching.
+## 📊 CV Report Card
 
-### Hybrid Search
+After uploading your resume, you instantly get:
+- **Overall CV Score** out of 100 with A+/A/B+/B/C grade
+- **Role Fit Score, ATS Score, Skills Score, Experience Score, Education Score**
+- **Strengths** — what is working in your CV
+- **Gaps** — what is weak or missing for the target role
+- **Missing Skills** — specific skills to add
+- **Improvement Suggestions** — actionable steps to improve your CV
+- **ATS Optimization Tips** — how to beat resume scanners
 
-Combine dense retrieval, sparse vectors, and filtering to improve relevance for search workflows where both semantic understanding and term-level precision matter.
+---
 
-### Recommendations and Matching
+## 🎤 Voice Typing
 
-Support recommendation, similarity matching, and nearest-neighbor retrieval workflows across text, embeddings, and other high-dimensional representations.
+Built-in voice input using the Web Speech API. Click the mic button, speak your answer, text appears in real-time in the answer box. Works best in Chrome browser.
 
-## Features
+---
 
-- **Vector search** for AI retrieval and semantic similarity workloads.
-- **Hybrid retrieval support** with sparse vector capabilities documented in [docs/sparse.md](./docs/sparse.md).
-- **Payload filtering** for structured retrieval logic documented in [docs/filter.md](./docs/filter.md).
-- **Backup APIs and flows** documented in [docs/backup-system.md](./docs/backup-system.md).
-- **Operational logging and instrumentation** documented in [docs/logs.md](./docs/logs.md) and [docs/mdbx-instrumentation.md](./docs/mdbx-instrumentation.md).
-- **CPU-targeted builds** for AVX2, AVX512, NEON, and SVE2 deployments.
-- **Docker deployment options** for local and server environments.
+## 🏢 Company-Specific Questions
 
-## API and Clients
+Select your target company to get tailored questions:
+- **Tech Giants**: Google, Amazon, Microsoft, Meta, Apple
+- **Indian IT**: Flipkart, Infosys, TCS, Wipro, Accenture
+- **Finance/Consulting**: Goldman Sachs, McKinsey, Deloitte
+- **Startups**: Generic startup culture questions
 
-Endee exposes an HTTP API for managing indexes and serving retrieval workloads. The current repo documentation and examples focus on running the server directly and calling its API endpoints.
+---
 
-Current developer entry points:
+## 🔄 AI Follow-up Questions
 
-- [Getting Started](./docs/getting-started.md) for local build and run flows
-- [Hosted Docs](https://docs.endee.io/quick-start) for product documentation
-- [Release Notes 1.0.0](https://github.com/endee-io/endee/releases/tag/1.0.0) for recent platform changes
+After each answer, the AI automatically generates a deeper follow-up question based on what you said — just like a real interviewer probing for more depth.
 
-## Docs and Links
+---
 
-- [Getting Started](./docs/getting-started.md)
-- [Hosted Documentation](https://docs.endee.io/quick-start)
-- [Release Notes](https://github.com/endee-io/endee/releases/tag/1.0.0)
-- [Sparse Search](./docs/sparse.md)
-- [Filtering](./docs/filter.md)
-- [Backups](./docs/backup-system.md)
+## 🛠️ Setup & Execution
 
-## Community and Contact
+### Prerequisites
+- Python 3.10+
+- Docker and Docker Compose
+- [Free Groq API Key](https://console.groq.com)
+- Chrome browser (for voice typing)
 
-- Join the community on [Discord](https://discord.gg/5HFGqDZQE3)
-- Visit the website at [endee.io](https://endee.io/)
-- For trademark or branding permissions, contact [enterprise@endee.io](mailto:enterprise@endee.io)
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/Amritdhillon26/endee
+cd endee/placecoach
+```
 
-## Contributing
+### Step 2: Start Endee Vector Database
+```bash
+docker compose up -d
+```
 
-We welcome contributions from the community to help make vector search faster and more accessible for everyone.
+### Step 3: Install Dependencies
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
-- Submit pull requests for fixes, features, and improvements
-- Report bugs or performance issues through GitHub issues
-- Propose enhancements for search quality, performance, and deployment workflows
+### Step 4: Configure Environment
+```bash
+cp .env.example .env
+# Add your GROQ_API_KEY to .env
+```
 
-## License
+### Step 5: Launch PlaceCoach
+```bash
+streamlit run app.py
+```
+Open http://localhost:8501 in Chrome.
 
-Endee is open source software licensed under the **Apache License 2.0**. See the [LICENSE](./LICENSE) file for full terms.
+### Step 6: Use It
+1. Upload your **resume PDF**
+2. Select **target role** and **company**
+3. Click **Start Interview** — CV Report Card generates instantly
+4. Answer by **typing or speaking** using the mic button
+5. Get **AI follow-up questions** after each answer
+6. Review your full **Interview Report** with scores and career advice
 
-## Trademark and Branding
+---
 
-“Endee” and the Endee logo are trademarks of Endee Labs.
+## 📂 Project Structure
+```
+placecoach/
+├── app.py              # Main Streamlit UI (chat + voice)
+├── cv_analyzer.py      # CV Report Card engine (score/100)
+├── rag_engine.py       # RAG retrieval + evaluation + follow-ups
+├── question_bank.py    # 150+ questions + Endee indexing
+├── resume_parser.py    # PDF parsing + LLM structuring
+├── requirements.txt
+├── docker-compose.yml  # Endee vector DB
+├── .env.example
+└── README.md
+```
 
-The Apache License 2.0 does not grant permission to use the Endee name, logos, or branding in a way that suggests endorsement or affiliation.
+---
 
-If you offer a hosted or managed service based on this software, you must use your own branding and avoid implying it is an official Endee service.
+## 🔧 Tech Stack
 
-## Third-Party Software
+| Component | Technology |
+|---|---|
+| Vector Database | **Endee** (HNSW, cosine similarity, INT8) |
+| Embedding Model | **all-MiniLM-L6-v2** (384-dim) |
+| LLM | **Groq LLaMA3-3-70b-versatile** (free, ultra-fast) |
+| UI | **Streamlit** |
+| Voice Input | **Web Speech API** (Chrome) |
+| PDF Parsing | **pdfplumber** |
 
-This project includes or depends on third-party software components licensed under their respective open-source licenses. Use of those components is governed by their own license terms.
+---
+
+## 📄 License
+
+Apache 2.0 License — see [LICENSE](../../LICENSE)
+
+Built on [Endee](https://github.com/endee-io/endee). Forked from endee-io/endee as required by project guidelines.
