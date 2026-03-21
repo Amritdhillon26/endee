@@ -13,23 +13,23 @@
 
 ## 🎥 Demo Video
 
-[▶️ Click here to watch the full demo](screenshots/demo.mov)
+[▶️ Click here to watch the full demo](placecoach/screenshots/demo.mov)
 
 ---
 
 ## 📸 Screenshots
 
 ### Home & Setup
-![Home](screenshots/home.png)
+![Home](placecoach/screenshots/home.png)
 
 ### CV Report Card
-![CV Report Card](screenshots/cv_report.png)
+![CV Report Card](placecoach/screenshots/cv_report.png)
 
 ### Interview Session
-![Interview](screenshots/interview.png)
+![Interview](placecoach/screenshots/interview.png)
 
 ### Final Report
-![Report](screenshots/report.png)
+![Report](placecoach/screenshots/report.png)
 
 ---
 
